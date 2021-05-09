@@ -50,51 +50,30 @@ public class LANSimulation {
 		System.out.println();
 
 		System.out.println("---------------------------------SCENARIOS------------------------------------------");
+		String workstation = "Filip";
+		String validPrinter = "Andy";
+		
 		String document = "author: FILIP   Hello World";
-		System.out.print("'Filip' prints '" + document + "' on 'Andy': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Andy", report));
-		System.out.println(" (expects true);");
-
-		System.out.print("'Filip' prints '" + document + "' on 'UnknownPrinter': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "UnknownPrinter", report));
-		System.out.println(" (expects false);");
-
-		System.out.print("'Filip' prints '" + document + "' on 'Hans': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Hans", report));
-		System.out.println(" (expects false);");
-
-		System.out.print("'Filip' prints '" + document + "' on 'n1': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "n1", report));
-		System.out.println(" (expects false);");
+		savePrintRequestInReport(network, workstation, document, validPrinter, report, true);
+		savePrintRequestInReport(network, workstation, document, "UnknownPrinter", report, false);
+		savePrintRequestInReport(network, workstation, document, "Hans", report, false);
+		savePrintRequestInReport(network, workstation, document, "n1", report, false);
 
 		document = "Hello World";
-		System.out.print("'Filip' prints '" + document + "' on 'Andy': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Andy", report));
-		System.out.println(" (expects true);");
+		savePrintRequestInReport(network, workstation, document, validPrinter, report, true);
 
 		document = "!PS Hello World in postscript.author:Filip.title:Hello.";
-		System.out.print("'Filip' prints '" + document + "' on 'Andy': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Andy", report));
-		System.out.println(" (expects true);");
-
-		System.out.print("'Filip' prints '" + document + "' on 'Hans': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Hans", report));
-		System.out.println(" (expects false);");
+		savePrintRequestInReport(network, workstation, document, validPrinter, report, true);
+		savePrintRequestInReport(network, workstation, document, "Hans", report, false);
 
 		document = "!PS Hello World in postscript.Author:Filip.Title:Hello.";
-		System.out.print("'Filip' prints '" + document + "' on 'Andy': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Andy", report));
-		System.out.println(" (expects true);");
+		savePrintRequestInReport(network, workstation, document, validPrinter, report, true);
 
 		document = "!PS Hello World in postscript.author:Filip;title:Hello;";
-		System.out.print("'Filip' prints '" + document + "' on 'Andy': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Andy", report));
-		System.out.println(" (expects true);");
+		savePrintRequestInReport(network, workstation, document, validPrinter, report, true);
 
 		document = "!PS Hello World in postscript.author:.title:.";
-		System.out.print("'Filip' prints '" + document + "' on 'Andy': ");
-		System.out.print(network.requestWorkstationPrintsDocument("Filip", document, "Andy", report));
-		System.out.println(" (expects true);");
+		savePrintRequestInReport(network, workstation, document, validPrinter, report, true);
 
 		try {
 			System.out.print("'UnknownWorkstation' prints 'does not matter' on 'does not matter': ");
@@ -116,27 +95,46 @@ public class LANSimulation {
 		System.out.println("---------------------------------REPORT------------------------------------------");
 		System.out.println(report.toString());
 	}
+	
+	private static void savePrintRequestInReport(Network network, String workstation, String document, String printer, Writer report, boolean expected) {
+		System.out.print("'" + workstation + "' prints '" + document + "' on '" + printer + "': ");
+		System.out.print(network.requestWorkstationPrintsDocument(workstation, document, printer, report));
+		if(expected) {
+			System.out.println(" (expects true);");
+		}else {
+			System.out.println(" (expects false);");
+		}
+		
+	}
 
 	public static void main(String args[]) {
 
 		if (args.length <= 0) {
 			System.out.println("Usage: t(est) | s(imulate) nrOfIterations '");
-		} else if (args[0].equals("t")) {// 'test' command
+		} else if (args[0].equals("t")) {
 			doRegressionTests();
-		} else if (args[0].equals("s")) {// 'simulate' command
-			Integer nrOfIters = new Integer(1);
-			if (args.length > 1) {
-				nrOfIters = new Integer(args[1]);
-			}
-			;
-
-			for (int i = 0; i < nrOfIters.intValue(); i++) {
-				simulate();
-			}
-		} else {// unknown commaND
-			System.out.print("Unknown command to LANSimulation: '");
-			System.out.print(args[0]);
-			System.out.println("'");
+		} else if (args[0].equals("s")) {
+			executeSimulateCommand(args);
+		} else {
+			printUnknownCommand(args);
 		}
+	}
+
+	private static void executeSimulateCommand(String[] args) {
+		Integer nrOfIters = new Integer(1);
+		if (args.length > 1) {
+			nrOfIters = new Integer(args[1]);
+		}
+		;
+
+		for (int i = 0; i < nrOfIters.intValue(); i++) {
+			simulate();
+		}
+	}
+
+	private static void printUnknownCommand(String[] args) {
+		System.out.print("Unknown command to LANSimulation: '");
+		System.out.print(args[0]);
+		System.out.println("'");
 	}
 }

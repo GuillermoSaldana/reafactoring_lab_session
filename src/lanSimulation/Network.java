@@ -185,7 +185,7 @@ public class Network {
 			return false;
 		}
 		; // not all workstations are registered
-		// all verifications succeedeed
+			// all verifications succeedeed
 		return true;
 	}
 

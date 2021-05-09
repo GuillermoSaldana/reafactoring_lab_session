@@ -45,39 +45,39 @@ public class LANTests extends TestCase {
 	}
 
 	private boolean compareFiles(String filename1, String filename2) {
-		FileInputStream f1, f2;
-		int b1 = 0, b2 = 0;
+		FileInputStream file1, file2;
+		int bytePosInFile1 = 0, bytePosInFile2 = 0;
 
 		try {
-			f1 = new FileInputStream(filename1);
+			file1 = new FileInputStream(filename1);
 			try {
-				f2 = new FileInputStream(filename2);
-			} catch (FileNotFoundException f2exc) {
+				file2 = new FileInputStream(filename2);
+			} catch (FileNotFoundException file2exc) {
 				try {
-					f1.close();
+					file1.close();
 				} catch (IOException exc) {
 				}
 				;
-				return false; // file 2 does not exist
+				return false;
 			}
-		} catch (FileNotFoundException f1exc) {
-			return false; // file 1 does not exist
+		} catch (FileNotFoundException file1exc) {
+			return false;
 		}
 		;
 
 		try {
-			if (f1.available() != f2.available()) {
+			if (file1.available() != file2.available()) {
 				return false;
 			} // length of files is different
-			while ((b1 != -1) & (b2 != -1)) {
-				b1 = f1.read();
-				b2 = f2.read();
-				if (b1 != b2) {
+			while ((bytePosInFile1 != -1) & (bytePosInFile2 != -1)) {
+				bytePosInFile1 = file1.read();
+				bytePosInFile2 = file2.read();
+				if (bytePosInFile1 != bytePosInFile2) {
 					return false;
 				} // discovered one diferring character
 			}
 			;
-			if ((b1 == -1) & (b2 == -1)) {
+			if ((bytePosInFile1 == -1) & (bytePosInFile2 == -1)) {
 				return true; // reached both end of files
 			} else {
 				return false; // one end of file not reached
@@ -86,109 +86,16 @@ public class LANTests extends TestCase {
 			return false; // read error, assume one file corrupted
 		} finally {
 			try {
-				f1.close();
+				file1.close();
 			} catch (IOException exc) {
 			}
 			;
 			try {
-				f2.close();
-			} catch (IOException exc) {
-			}
-			;
-		}
-	}
-
-	private void YOUMAYWANTTOtestCompareFiles() {
-		String fName1 = "testCompare1.txt", fName2 = "testCompare2.txt", fName3 = "testCompare3.txt",
-				fName4 = "testCompare4.txt";
-		FileWriter f1, f2, f3, f4;
-
-		try {
-			f1 = new FileWriter(fName1);
-			try {
-				f2 = new FileWriter(fName2);
-				try {
-					f3 = new FileWriter(fName3);
-					try {
-						f4 = new FileWriter(fName4);
-					} catch (IOException f3exc) {
-						try {
-							f1.close();
-						} catch (IOException exc) {
-						}
-						;
-						try {
-							f2.close();
-						} catch (IOException exc) {
-						}
-						;
-						try {
-							f3.close();
-						} catch (IOException exc) {
-						}
-						;
-						return;
-					}
-				} catch (IOException f3exc) {
-					try {
-						f1.close();
-					} catch (IOException exc) {
-					}
-					;
-					try {
-						f2.close();
-					} catch (IOException exc) {
-					}
-					;
-					return;
-				}
-			} catch (IOException f2exc) {
-				try {
-					f1.close();
-				} catch (IOException exc) {
-				}
-				;
-				return;
-			}
-		} catch (IOException f1exc) {
-			return;
-		}
-		;
-
-		try {
-			f1.write("aaa");
-			f2.write("aaa");
-			f3.write("aa");
-			f4.write("aab");
-		} catch (IOException exc) {
-		} finally {
-			try {
-				f1.close();
-			} catch (IOException exc) {
-			}
-			;
-			try {
-				f2.close();
-			} catch (IOException exc) {
-			}
-			;
-			try {
-				f3.close();
-			} catch (IOException exc) {
-			}
-			;
-			try {
-				f4.close();
+				file2.close();
 			} catch (IOException exc) {
 			}
 			;
 		}
-
-		assertTrue("equals fName1 to fName2 ", compareFiles(fName1, fName2));
-		assertFalse("not equals fName1 to fName3 (fName 3 is shorter)", compareFiles(fName1, fName3));
-		assertFalse("not equals fName3 to fName1  (fName 3 is shorter)", compareFiles(fName3, fName1));
-		assertFalse("not equals fName1 to fName4 (last character differs)", compareFiles(fName1, fName4));
-		assertFalse("not equals fName1 to fName4 (last character differs)", compareFiles(fName1, fName4));
 	}
 
 	public void testBasicNode() {

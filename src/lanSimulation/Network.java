@@ -58,8 +58,6 @@ public class Network {
 		initPtr = this;
 		firstNode = null;
 		workstations = new Hashtable(size, 1.0f);
-		assert isInitialized();
-		assert !consistentNetwork();
 	}
 
 	/**

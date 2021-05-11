@@ -108,16 +108,16 @@ public class Network {
 	 * <strong>Precondition:</strong>this.isInitialized();
 	 * </p>
 	 */
-	public boolean hasWorkstation(String ws) {
+	public boolean hasWorkstation(final String workstation) {
 		// return workstations_.containsKey(ws);
-		Node n;
+		Node node;
 
 		assert isInitialized();
-		n = (Node) workstations.get(ws);
-		if (n == null) {
+		node = (Node) workstations.get(workstation);
+		if (node == null) {
 			return false;
 		} else {
-			return n.type_ == Node.WORKSTATION;
+			return node.type_ == Node.WORKSTATION;
 		}
 	};
 

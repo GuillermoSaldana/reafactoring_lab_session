@@ -74,12 +74,12 @@ public class Network {
 	 * </p>
 	 */
 	public static Network defaultExample() {
-		Network network = new Network(2);
+		final Network network = new Network(2);
 
-		Node wsFilip = new Node(Node.WORKSTATION, "Filip");
-		Node n1 = new Node(Node.NODE, "n1");
-		Node wsHans = new Node(Node.WORKSTATION, "Hans");
-		Node prAndy = new Node(Node.PRINTER, "Andy");
+		final Node wsFilip = new Node(Node.WORKSTATION, "Filip");
+		final Node n1 = new Node(Node.NODE, "n1");
+		final Node wsHans = new Node(Node.WORKSTATION, "Hans");
+		final Node prAndy = new Node(Node.PRINTER, "Andy");
 
 		wsFilip.nextNode_ = n1;
 		n1.nextNode_ = wsHans;

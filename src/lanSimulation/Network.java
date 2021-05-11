@@ -73,7 +73,7 @@ public class Network {
 	 * result.consistentNetwork();
 	 * </p>
 	 */
-	public static Network DefaultExample() {
+	public static Network defaultExample() {
 		Network network = new Network(2);
 
 		Node wsFilip = new Node(Node.WORKSTATION, "Filip");

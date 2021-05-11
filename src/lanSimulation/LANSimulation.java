@@ -30,7 +30,7 @@ public class LANSimulation {
 	}
 
 	public static void simulate() {
-		Network network = Network.DefaultExample();
+		Network network = Network.defaultExample();
 		StringWriter report = new StringWriter(100);
 		StringBuffer buf = new StringBuffer(100);
 

@@ -110,7 +110,7 @@ public class LANTests extends TestCase {
 	}
 
 	public void testDefaultNetworkToString() {
-		Network network = Network.DefaultExample();
+		Network network = Network.defaultExample();
 
 		assertTrue("isInitialized ", network.isInitialized());
 		assertTrue("consistentNetwork ", network.consistentNetwork());
@@ -119,7 +119,7 @@ public class LANTests extends TestCase {
 	}
 
 	public void testWorkstationPrintsDocument() {
-		Network network = Network.DefaultExample();
+		Network network = Network.defaultExample();
 		StringWriter report = new StringWriter(500);
 
 		assertTrue("PrintSuccess ", network.requestWorkstationPrintsDocument("Filip", "Hello World", "Andy", report));
@@ -136,7 +136,7 @@ public class LANTests extends TestCase {
 	}
 
 	public void testBroadcast() {
-		Network network = Network.DefaultExample();
+		Network network = Network.defaultExample();
 		StringWriter report = new StringWriter(500);
 
 		assertTrue("Broadcast ", network.requestBroadcast(report));
@@ -152,7 +152,7 @@ public class LANTests extends TestCase {
 	 * as expected.
 	 */
 	public void testOutput() {
-		Network network = Network.DefaultExample();
+		Network network = Network.defaultExample();
 		String generateOutputFName = "useOutput.txt", expectedOutputFName = "expectedOutput.txt";
 		FileWriter generateOutput;
 		StringBuffer buf = new StringBuffer(500);
@@ -208,7 +208,7 @@ public class LANTests extends TestCase {
 	 */
 
 	public void test() {
-		Network network = Network.DefaultExample();
+		Network network = Network.defaultExample();
 		StringWriter report = new StringWriter(100);
 		network.requestWorkstationPrintsDocument("Hans", "does not matter", "does not matter", report);
 	}

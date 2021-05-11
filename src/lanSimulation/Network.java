@@ -109,16 +109,14 @@ public class Network {
 	 * </p>
 	 */
 	public boolean hasWorkstation(final String workstation) {
-		// return workstations_.containsKey(ws);
 		Node node;
 
 		assert isInitialized();
 		node = (Node) workstations.get(workstation);
 		if (node == null) {
 			return false;
-		} else {
-			return node.type_ == Node.WORKSTATION;
 		}
+		return node.type_ == Node.WORKSTATION;
 	};
 
 	/**

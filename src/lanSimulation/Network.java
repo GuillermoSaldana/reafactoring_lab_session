@@ -34,17 +34,17 @@ public class Network {
 	/**
 	 * Holds a pointer to myself. Used to verify whether I am properly initialized.
 	 */
-	private Network initPtr_;
+	private Network initPtr;
 	/**
 	 * Holds a pointer to some "first" node in the token ring. Used to ensure that
 	 * various printing operations return expected behaviour.
 	 */
-	private Node firstNode_;
+	private Node firstNode;
 	/**
 	 * Maps the names of workstations on the actual workstations. Used to initiate
 	 * the requests for the network.
 	 */
-	private Hashtable workstations_;
+	private Hashtable workstations;
 
 	/**
 	 * Construct a <em>Network</em> suitable for holding #size Workstations.
@@ -55,9 +55,9 @@ public class Network {
 	 */
 	public Network(int size) {
 		assert size > 0;
-		initPtr_ = this;
-		firstNode_ = null;
-		workstations_ = new Hashtable(size, 1.0f);
+		initPtr = this;
+		firstNode = null;
+		workstations = new Hashtable(size, 1.0f);
 		assert isInitialized();
 		assert !consistentNetwork();
 	}
@@ -88,9 +88,9 @@ public class Network {
 		wsHans.nextNode_ = prAndy;
 		prAndy.nextNode_ = wsFilip;
 
-		network.workstations_.put(wsFilip.name_, wsFilip);
-		network.workstations_.put(wsHans.name_, wsHans);
-		network.firstNode_ = wsFilip;
+		network.workstations.put(wsFilip.name_, wsFilip);
+		network.workstations.put(wsHans.name_, wsHans);
+		network.firstNode = wsFilip;
 
 		assert network.isInitialized();
 		assert network.consistentNetwork();
@@ -101,7 +101,7 @@ public class Network {
 	 * Answer whether #receiver is properly initialized.
 	 */
 	public boolean isInitialized() {
-		return (initPtr_ == this);
+		return (initPtr == this);
 	};
 
 	/**
@@ -115,7 +115,7 @@ public class Network {
 		Node n;
 
 		assert isInitialized();
-		n = (Node) workstations_.get(ws);
+		n = (Node) workstations.get(ws);
 		if (n == null) {
 			return false;
 		} else {
@@ -137,18 +137,18 @@ public class Network {
 		Enumeration iter;
 		Node currentNode;
 		int printersFound = 0, workstationsFound = 0;
-		Hashtable encountered = new Hashtable(workstations_.size() * 2, 1.0f);
+		Hashtable encountered = new Hashtable(workstations.size() * 2, 1.0f);
 
-		if (workstations_.isEmpty()) {
+		if (workstations.isEmpty()) {
 			return false;
 		}
 		;
-		if (firstNode_ == null) {
+		if (firstNode == null) {
 			return false;
 		}
 		;
 		// verify whether all registered workstations are indeed workstations
-		iter = workstations_.elements();
+		iter = workstations.elements();
 		while (iter.hasMoreElements()) {
 			currentNode = (Node) iter.nextElement();
 			if (currentNode.type_ != Node.WORKSTATION) {
@@ -159,7 +159,7 @@ public class Network {
 		;
 		// enumerate the token ring, verifying whether all workstations are registered
 		// also count the number of printers and see whether the ring is circular
-		currentNode = firstNode_;
+		currentNode = firstNode;
 		while (!encountered.containsKey(currentNode.name_)) {
 			encountered.put(currentNode.name_, currentNode);
 			if (currentNode.type_ == Node.WORKSTATION) {
@@ -173,7 +173,7 @@ public class Network {
 			currentNode = currentNode.nextNode_;
 		}
 		;
-		if (currentNode != firstNode_) {
+		if (currentNode != firstNode) {
 			return false;
 		}
 		;// not circular
@@ -181,7 +181,7 @@ public class Network {
 			return false;
 		}
 		;// does not contain a printer
-		if (workstationsFound != workstations_.size()) {
+		if (workstationsFound != workstations.size()) {
 			return false;
 		}
 		; // not all workstations are registered
@@ -212,8 +212,8 @@ public class Network {
 		}
 		;
 
-		Node currentNode = firstNode_;
-		Packet packet = new Packet("BROADCAST", firstNode_.name_, firstNode_.name_);
+		Node currentNode = firstNode;
+		Packet packet = new Packet("BROADCAST", firstNode.name_, firstNode.name_);
 		do {
 			try {
 				report.write("\tNode '");
@@ -278,7 +278,7 @@ public class Network {
 		Node startNode, currentNode;
 		Packet packet = new Packet(document, workstation, printer);
 
-		startNode = (Node) workstations_.get(workstation);
+		startNode = (Node) workstations.get(workstation);
 
 		try {
 			report.write("\tNode '");
@@ -395,7 +395,7 @@ public class Network {
 	 */
 	public String toString() {
 		assert isInitialized();
-		StringBuffer buf = new StringBuffer(30 * workstations_.size());
+		StringBuffer buf = new StringBuffer(30 * workstations.size());
 		printOn(buf);
 		return buf.toString();
 	}
@@ -408,7 +408,7 @@ public class Network {
 	 */
 	public void printOn(StringBuffer buf) {
 		assert isInitialized();
-		Node currentNode = firstNode_;
+		Node currentNode = firstNode;
 		do {
 			switch (currentNode.type_) {
 			case Node.NODE:
@@ -434,7 +434,7 @@ public class Network {
 			;
 			buf.append(" -> ");
 			currentNode = currentNode.nextNode_;
-		} while (currentNode != firstNode_);
+		} while (currentNode != firstNode);
 		buf.append(" ... ");
 	}
 
@@ -448,7 +448,7 @@ public class Network {
 		assert isInitialized();
 
 		buf.append("<HTML>\n<HEAD>\n<TITLE>LAN Simulation</TITLE>\n</HEAD>\n<BODY>\n<H1>LAN SIMULATION</H1>");
-		Node currentNode = firstNode_;
+		Node currentNode = firstNode;
 		buf.append("\n\n<UL>");
 		do {
 			buf.append("\n\t<LI> ");
@@ -476,7 +476,7 @@ public class Network {
 			;
 			buf.append(" </LI>");
 			currentNode = currentNode.nextNode_;
-		} while (currentNode != firstNode_);
+		} while (currentNode != firstNode);
 		buf.append("\n\t<LI>...</LI>\n</UL>\n\n</BODY>\n</HTML>\n");
 	}
 
@@ -489,7 +489,7 @@ public class Network {
 	public void printXMLOn(StringBuffer buf) {
 		assert isInitialized();
 
-		Node currentNode = firstNode_;
+		Node currentNode = firstNode;
 		buf.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<network>");
 		do {
 			buf.append("\n\t");
@@ -516,7 +516,7 @@ public class Network {
 			}
 			;
 			currentNode = currentNode.nextNode_;
-		} while (currentNode != firstNode_);
+		} while (currentNode != firstNode);
 		buf.append("\n</network>");
 	}
 

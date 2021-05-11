@@ -99,7 +99,7 @@ public class Network {
 	 * Answer whether #receiver is properly initialized.
 	 */
 	public boolean isInitialized() {
-		return (initPtr == this);
+		return initPtr.equals(this);
 	};
 
 	/**

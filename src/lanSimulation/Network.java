@@ -344,26 +344,14 @@ public class Network {
 						title = document.message_.substring(startPos + 6, endPos);
 					}
 					;
-					report.write("\tAccounting -- author = '");
-					report.write(author);
-					report.write("' -- title = '");
-					report.write(title);
-					report.write("'\n");
-					report.write(">>> Postscript job delivered.\n\n");
-					report.flush();
+					accountingDocument(report, author, title);
 				} else {
 					title = "ASCII DOCUMENT";
 					if (document.message_.length() >= 16) {
 						author = document.message_.substring(8, 16);
 					}
 					;
-					report.write("\tAccounting -- author = '");
-					report.write(author);
-					report.write("' -- title = '");
-					report.write(title);
-					report.write("'\n");
-					report.write(">>> ASCII Print job delivered.\n\n");
-					report.flush();
+					accountingDocument(report, author, title);
 				}
 				;
 			} catch (IOException exc) {
@@ -381,6 +369,19 @@ public class Network {
 			;
 			return false;
 		}
+	}
+
+	private void accountingDocument(Writer report, String author, String title) throws IOException {
+		report.write("\tAccounting -- author = '");
+		report.write(author);
+		report.write("' -- title = '");
+		report.write(title);
+		report.write("'\n");
+		if(title != "ASCII DOCUMENT")
+			report.write(">>> Postscript job delivered.\n\n");
+		else
+			report.write(">>> ASCII Print job delivered.\n\n");
+		report.flush();
 	}
 
 	/**

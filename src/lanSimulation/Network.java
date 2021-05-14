@@ -224,7 +224,7 @@ public class Network {
 			}
 			;
 			currentNode = currentNode.nextNode_;
-		} while (!packet.destination_.equals(currentNode.name_));
+		} while (!packet.destination.equals(currentNode.name_));
 
 		try {
 			report.write(">>> Broadcast travelled whole token ring.\n\n");
@@ -275,7 +275,7 @@ public class Network {
 		Packet packet = new Packet(document, workstation, printer);
 
 		startNode = (Node) workstations.get(workstation);
-
+		
 		try {
 			report.write("\tNode '");
 			report.write(startNode.name_);
@@ -286,7 +286,7 @@ public class Network {
 		}
 		;
 		currentNode = startNode.nextNode_;
-		while ((!packet.destination_.equals(currentNode.name_)) & (!packet.origin_.equals(currentNode.name_))) {
+		while ((!packet.destination.equals(currentNode.name_)) & (!packet.origin.equals(currentNode.name_))) {
 			try {
 				report.write("\tNode '");
 				report.write(currentNode.name_);
@@ -300,7 +300,7 @@ public class Network {
 		}
 		;
 
-		if (packet.destination_.equals(currentNode.name_)) {
+		if (packet.destination.equals(currentNode.name_)) {
 			result = printDocument(currentNode, packet, report);
 		} else {
 			try {
@@ -323,32 +323,32 @@ public class Network {
 
 		if (printer.type_ == Node.PRINTER) {
 			try {
-				if (document.message_.startsWith("!PS")) {
-					startPos = document.message_.indexOf("author:");
+				if (document.message.startsWith("!PS")) {
+					startPos = document.message.indexOf("author:");
 					if (startPos >= 0) {
-						endPos = document.message_.indexOf(".", startPos + 7);
+						endPos = document.message.indexOf(".", startPos + 7);
 						if (endPos < 0) {
-							endPos = document.message_.length();
+							endPos = document.message.length();
 						}
 						;
-						author = document.message_.substring(startPos + 7, endPos);
+						author = document.message.substring(startPos + 7, endPos);
 					}
 					;
-					startPos = document.message_.indexOf("title:");
+					startPos = document.message.indexOf("title:");
 					if (startPos >= 0) {
-						endPos = document.message_.indexOf(".", startPos + 6);
+						endPos = document.message.indexOf(".", startPos + 6);
 						if (endPos < 0) {
-							endPos = document.message_.length();
+							endPos = document.message.length();
 						}
 						;
-						title = document.message_.substring(startPos + 6, endPos);
+						title = document.message.substring(startPos + 6, endPos);
 					}
 					;
 					accountingDocument(report, author, title);
 				} else {
 					title = "ASCII DOCUMENT";
-					if (document.message_.length() >= 16) {
-						author = document.message_.substring(8, 16);
+					if (document.message.length() >= 16) {
+						author = document.message.substring(8, 16);
 					}
 					;
 					accountingDocument(report, author, title);

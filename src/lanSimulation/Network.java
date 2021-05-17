@@ -211,7 +211,7 @@ public class Network {
 		Node currentNode = firstNode;
 		Packet packet = new Packet("BROADCAST", firstNode.name_, firstNode.name_);
 		do {
-			logging(report, currentNode, packet);
+			currentNode.logging(report, packet);
 			
 			currentNode = currentNode.nextNode_;
 		} while (!packet.destination.equals(currentNode.name_));
@@ -223,22 +223,6 @@ public class Network {
 		}
 		;
 		return true;
-	}
-
-	private void logging(Writer report, Node currentNode, Packet packet) {
-		try {
-			if(packet.message.equals("BROADCAST")) {
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' accepts broadcase packet.\n");
-			}
-			report.write("\tNode '");
-			report.write(currentNode.name_);
-			report.write("' passes packet on.\n");
-			report.flush();
-		} catch (IOException exc) {
-			// just ignore
-		}
 	}
 
 	/**
@@ -281,11 +265,11 @@ public class Network {
 
 		startNode = (Node) workstations.get(workstation);
 		
-		logging(report, startNode, packet);
+		startNode.logging(report, packet);
 		
 		currentNode = startNode.nextNode_;
 		while ((!packet.destination.equals(currentNode.name_)) & (!packet.origin.equals(currentNode.name_))) {
-			logging(report, currentNode, packet);
+			currentNode.logging(report, packet);
 			currentNode = currentNode.nextNode_;
 		}
 

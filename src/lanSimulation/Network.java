@@ -204,7 +204,7 @@ public class Network {
 		try {
 			report.write("Broadcast Request\n");
 		} catch (IOException exc) {
-			// just ignore
+			
 		}
 		;
 
@@ -219,7 +219,7 @@ public class Network {
 		try {
 			report.write(">>> Broadcast travelled whole token ring.\n\n");
 		} catch (IOException exc) {
-			// just ignore
+			
 		}
 		;
 		return true;
@@ -256,7 +256,7 @@ public class Network {
 			report.write(printer);
 			report.write("' ...\n");
 		} catch (IOException exc) {
-			// just ignore
+			
 		}
 
 		boolean result = false;
@@ -280,7 +280,7 @@ public class Network {
 				report.write(">>> Destinition not found, print job cancelled.\n\n");
 				report.flush();
 			} catch (IOException exc) {
-				// just ignore
+				
 			}
 			
 			result = false;

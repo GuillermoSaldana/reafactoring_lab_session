@@ -274,7 +274,7 @@ public class Network {
 		}
 
 		if (packet.destination.equals(currentNode.name_)) {
-			result = printDocument(currentNode, packet, report);
+			result = packet.printDocument(currentNode, this, report);
 		} else {
 			try {
 				report.write(">>> Destinition not found, print job cancelled.\n\n");
@@ -289,62 +289,7 @@ public class Network {
 		return result;
 	}
 
-	private boolean printDocument(Node printer, Packet document, Writer report) {
-		String author = "Unknown";
-		String title = "Untitled";
-		int startPos = 0, endPos = 0;
-
-		if (printer.type_ == Node.PRINTER) {
-			try {
-				if (document.message.startsWith("!PS")) {
-					startPos = document.message.indexOf("author:");
-					if (startPos >= 0) {
-						endPos = document.message.indexOf(".", startPos + 7);
-						if (endPos < 0) {
-							endPos = document.message.length();
-						}
-						;
-						author = document.message.substring(startPos + 7, endPos);
-					}
-					;
-					startPos = document.message.indexOf("title:");
-					if (startPos >= 0) {
-						endPos = document.message.indexOf(".", startPos + 6);
-						if (endPos < 0) {
-							endPos = document.message.length();
-						}
-						;
-						title = document.message.substring(startPos + 6, endPos);
-					}
-					;
-					accountingDocument(report, author, title);
-				} else {
-					title = "ASCII DOCUMENT";
-					if (document.message.length() >= 16) {
-						author = document.message.substring(8, 16);
-					}
-					;
-					accountingDocument(report, author, title);
-				}
-				;
-			} catch (IOException exc) {
-				// just ignore
-			}
-			;
-			return true;
-		} else {
-			try {
-				report.write(">>> Destinition is not a printer, print job cancelled.\n\n");
-				report.flush();
-			} catch (IOException exc) {
-				// just ignore
-			}
-			;
-			return false;
-		}
-	}
-
-	private void accountingDocument(Writer report, String author, String title) throws IOException {
+	public void accountingDocument(Writer report, String author, String title) throws IOException {
 		report.write("\tAccounting -- author = '");
 		report.write(author);
 		report.write("' -- title = '");

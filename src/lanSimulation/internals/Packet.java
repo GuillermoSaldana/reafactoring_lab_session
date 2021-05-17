@@ -19,6 +19,11 @@
  */
 package lanSimulation.internals;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import lanSimulation.Network;
+
 /**
  * A <em>Packet</em> represents a unit of information to be sent over the Local
  * Area Network (LAN).
@@ -53,6 +58,61 @@ public class Packet {
 		this.message = message;
 		this.origin = origin;
 		this.destination = destination;
+	}
+
+	public boolean printDocument(Node printer, Network network, Writer report) {
+		String author = "Unknown";
+		String title = "Untitled";
+		int startPos = 0, endPos = 0;
+	
+		if (printer.type_ == Node.PRINTER) {
+			try {
+				if (message.startsWith("!PS")) {
+					startPos = message.indexOf("author:");
+					if (startPos >= 0) {
+						endPos = message.indexOf(".", startPos + 7);
+						if (endPos < 0) {
+							endPos = message.length();
+						}
+						;
+						author = message.substring(startPos + 7, endPos);
+					}
+					;
+					startPos = message.indexOf("title:");
+					if (startPos >= 0) {
+						endPos = message.indexOf(".", startPos + 6);
+						if (endPos < 0) {
+							endPos = message.length();
+						}
+						;
+						title = message.substring(startPos + 6, endPos);
+					}
+					;
+					network.accountingDocument(report, author, title);
+				} else {
+					title = "ASCII DOCUMENT";
+					if (message.length() >= 16) {
+						author = message.substring(8, 16);
+					}
+					;
+					network.accountingDocument(report, author, title);
+				}
+				;
+			} catch (IOException exc) {
+				
+			}
+			;
+			return true;
+		} else {
+			try {
+				report.write(">>> Destinition is not a printer, print job cancelled.\n\n");
+				report.flush();
+			} catch (IOException exc) {
+				
+			}
+			;
+			return false;
+		}
 	}
 
 }

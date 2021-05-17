@@ -29,24 +29,6 @@ import lanSimulation.Network;
  * Several types of Nodes exist.
  */
 public class Node {
-	// enumeration constants specifying all legal node types
-	/**
-	 * A node with type NODE has only basic functionality.
-	 */
-	public static final byte NODE = 0;
-	/**
-	 * A node with type WORKSTATION may initiate requests on the LAN.
-	 */
-	public static final byte WORKSTATION = 1;
-	/**
-	 * A node with type PRINTER may accept packages to be printed.
-	 */
-	public static final byte PRINTER = 2;
-
-	/**
-	 * Holds the type of the Node.
-	 */
-	public byte type_;
 	/**
 	 * Holds the name of the Node.
 	 */
@@ -64,9 +46,7 @@ public class Node {
 	 * <strong>Precondition:</strong> (type >= NODE) & (type <= PRINTER);
 	 * </p>
 	 */
-	public Node(byte type, String name) {
-		assert (type >= NODE) & (type <= PRINTER);
-		type_ = type;
+	public Node(String name) {
 		name_ = name;
 		nextNode_ = null;
 	}
@@ -78,9 +58,7 @@ public class Node {
 	 * <strong>Precondition:</strong> (type >= NODE) & (type <= PRINTER);
 	 * </p>
 	 */
-	public Node(byte type, String name, Node nextNode) {
-		assert (type >= NODE) & (type <= PRINTER);
-		type_ = type;
+	public Node(String name, Node nextNode) {
 		name_ = name;
 		nextNode_ = nextNode;
 	}
@@ -102,51 +80,15 @@ public class Node {
 	}
 	
 	public void printOn(StringBuffer buf) {
-		switch (type_) {
-		case Node.NODE:
 			buf.append("Node ");
 			buf.append(name_);
 			buf.append(" [Node]");
-			break;
-		case Node.WORKSTATION:
-			buf.append("Workstation ");
-			buf.append(name_);
-			buf.append(" [Workstation]");
-			break;
-		case Node.PRINTER:
-			buf.append("Printer ");
-			buf.append(name_);
-			buf.append(" [Printer]");
-			break;
-		default:
-			buf.append("(Unexpected)");
-			;
-			break;
-		}
 	}
 	
 	public void printXMLOn(StringBuffer buf) {
-		switch (type_) {
-		case Node.NODE:
-			buf.append("<node>");
-			buf.append(name_);
-			buf.append("</node>");
-			break;
-		case Node.WORKSTATION:
-			buf.append("<workstation>");
-			buf.append(name_);
-			buf.append("</workstation>");
-			break;
-		case Node.PRINTER:
-			buf.append("<printer>");
-			buf.append(name_);
-			buf.append("</printer>");
-			break;
-		default:
-			buf.append("<unknown></unknown>");
-			;
-			break;
-		}
+		buf.append("<node>");
+		buf.append(name_);
+		buf.append("</node>");
 	}
 
 }

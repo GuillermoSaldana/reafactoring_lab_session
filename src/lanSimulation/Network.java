@@ -169,7 +169,7 @@ public class Network {
 			currentNode = currentNode.nextNode_;
 		}
 		;
-		if (currentNode != firstNode) {
+		if (isFirstNode(currentNode)) {
 			return false;
 		}
 		;// not circular
@@ -353,8 +353,12 @@ public class Network {
 			;
 			buf.append(" -> ");
 			currentNode = currentNode.nextNode_;
-		} while (currentNode != firstNode);
+		} while (isFirstNode(currentNode));
 		buf.append(" ... ");
+	}
+
+	private boolean isFirstNode(Node currentNode) {
+		return currentNode != firstNode;
 	}
 
 	/**
@@ -395,7 +399,7 @@ public class Network {
 			;
 			buf.append(" </LI>");
 			currentNode = currentNode.nextNode_;
-		} while (currentNode != firstNode);
+		} while (isFirstNode(currentNode));
 		buf.append("\n\t<LI>...</LI>\n</UL>\n\n</BODY>\n</HTML>\n");
 	}
 
@@ -435,7 +439,7 @@ public class Network {
 			}
 			;
 			currentNode = currentNode.nextNode_;
-		} while (currentNode != firstNode);
+		} while (isFirstNode(currentNode));
 		buf.append("\n</network>");
 	}
 

@@ -166,10 +166,10 @@ public class Network {
 				printersFound++;
 			}
 			;
-			currentNode = currentNode.nextNode_;
+			currentNode = send(currentNode);
 		}
 		;
-		if (isFirstNode(currentNode)) {
+		if (currentNode != firstNode) {
 			return false;
 		}
 		;// not circular
@@ -183,6 +183,10 @@ public class Network {
 		; // not all workstations are registered
 			// all verifications succeedeed
 		return true;
+	}
+
+	private Node send(Node currentNode) {
+		return currentNode.nextNode_;
 	}
 
 	/**
@@ -213,8 +217,8 @@ public class Network {
 		do {
 			currentNode.logging(report, packet);
 			
-			currentNode = currentNode.nextNode_;
-		} while (!atDestination(currentNode, packet));
+			currentNode = send(currentNode);
+		} while (!packet.destination.equals(currentNode.name_));
 
 		try {
 			report.write(">>> Broadcast travelled whole token ring.\n\n");
@@ -223,10 +227,6 @@ public class Network {
 		}
 		;
 		return true;
-	}
-
-	private boolean atDestination(Node currentNode, Packet packet) {
-		return packet.destination.equals(currentNode.name_);
 	}
 
 	/**
@@ -271,13 +271,13 @@ public class Network {
 		
 		startNode.logging(report, packet);
 		
-		currentNode = startNode.nextNode_;
-		while ((!atDestination(currentNode, packet)) & (!packet.origin.equals(currentNode.name_))) {
+		currentNode = send(startNode);
+		while ((!packet.destination.equals(currentNode.name_)) & (!packet.origin.equals(currentNode.name_))) {
 			currentNode.logging(report, packet);
-			currentNode = currentNode.nextNode_;
+			currentNode = send(currentNode);
 		}
 
-		if (atDestination(currentNode, packet)) {
+		if (packet.destination.equals(currentNode.name_)) {
 			result = packet.printDocument(currentNode, this, report);
 		} else {
 			try {
@@ -352,13 +352,9 @@ public class Network {
 			}
 			;
 			buf.append(" -> ");
-			currentNode = currentNode.nextNode_;
-		} while (isFirstNode(currentNode));
+			currentNode = send(currentNode);
+		} while (currentNode != firstNode);
 		buf.append(" ... ");
-	}
-
-	private boolean isFirstNode(Node currentNode) {
-		return currentNode != firstNode;
 	}
 
 	/**
@@ -398,8 +394,8 @@ public class Network {
 			}
 			;
 			buf.append(" </LI>");
-			currentNode = currentNode.nextNode_;
-		} while (isFirstNode(currentNode));
+			currentNode = send(currentNode);
+		} while (currentNode != firstNode);
 		buf.append("\n\t<LI>...</LI>\n</UL>\n\n</BODY>\n</HTML>\n");
 	}
 
@@ -438,8 +434,8 @@ public class Network {
 				break;
 			}
 			;
-			currentNode = currentNode.nextNode_;
-		} while (isFirstNode(currentNode));
+			currentNode = send(currentNode);
+		} while (currentNode != firstNode);
 		buf.append("\n</network>");
 	}
 

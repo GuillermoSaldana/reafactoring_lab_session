@@ -211,18 +211,8 @@ public class Network {
 		Node currentNode = firstNode;
 		Packet packet = new Packet("BROADCAST", firstNode.name_, firstNode.name_);
 		do {
-			try {
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' accepts broadcase packet.\n");
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' passes packet on.\n");
-				report.flush();
-			} catch (IOException exc) {
-				// just ignore
-			}
-			;
+			logging(report, currentNode, packet);
+			
 			currentNode = currentNode.nextNode_;
 		} while (!packet.destination.equals(currentNode.name_));
 
@@ -233,6 +223,22 @@ public class Network {
 		}
 		;
 		return true;
+	}
+
+	private void logging(Writer report, Node currentNode, Packet packet) {
+		try {
+			if(packet.message.equals("BROADCAST")) {
+				report.write("\tNode '");
+				report.write(currentNode.name_);
+				report.write("' accepts broadcase packet.\n");
+			}
+			report.write("\tNode '");
+			report.write(currentNode.name_);
+			report.write("' passes packet on.\n");
+			report.flush();
+		} catch (IOException exc) {
+			// just ignore
+		}
 	}
 
 	/**
@@ -268,7 +274,6 @@ public class Network {
 		} catch (IOException exc) {
 			// just ignore
 		}
-		;
 
 		boolean result = false;
 		Node startNode, currentNode;
@@ -276,29 +281,13 @@ public class Network {
 
 		startNode = (Node) workstations.get(workstation);
 		
-		try {
-			report.write("\tNode '");
-			report.write(startNode.name_);
-			report.write("' passes packet on.\n");
-			report.flush();
-		} catch (IOException exc) {
-			// just ignore
-		}
-		;
+		logging(report, startNode, packet);
+		
 		currentNode = startNode.nextNode_;
 		while ((!packet.destination.equals(currentNode.name_)) & (!packet.origin.equals(currentNode.name_))) {
-			try {
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' passes packet on.\n");
-				report.flush();
-			} catch (IOException exc) {
-				// just ignore
-			}
-			;
+			logging(report, currentNode, packet);
 			currentNode = currentNode.nextNode_;
 		}
-		;
 
 		if (packet.destination.equals(currentNode.name_)) {
 			result = printDocument(currentNode, packet, report);
@@ -309,7 +298,7 @@ public class Network {
 			} catch (IOException exc) {
 				// just ignore
 			}
-			;
+			
 			result = false;
 		}
 

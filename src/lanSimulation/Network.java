@@ -287,6 +287,13 @@ public class Network {
 			currentNode = send(currentNode);
 		}
 
+		result = checkPacketDestination(report, currentNode, packet);
+
+		return result;
+	}
+
+	private boolean checkPacketDestination(Writer report, Node currentNode, Packet packet) {
+		boolean result;
 		if (packet.destination.equals(currentNode.name_)) {
 			result = packet.printDocument(currentNode, this, report);
 		} else {
@@ -299,7 +306,6 @@ public class Network {
 			
 			result = false;
 		}
-
 		return result;
 	}
 

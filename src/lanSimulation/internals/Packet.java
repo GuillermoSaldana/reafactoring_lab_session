@@ -68,25 +68,9 @@ public class Packet {
 		if (printer instanceof Printer) {
 			try {
 				if (message.startsWith("!PS")) {
-					startPos = message.indexOf("author:");
-					if (startPos >= 0) {
-						endPos = message.indexOf(".", startPos + 7);
-						if (endPos < 0) {
-							endPos = message.length();
-						}
-						
-						author = message.substring(startPos + 7, endPos);
-					}
 					
-					startPos = message.indexOf("title:");
-					if (startPos >= 0) {
-						endPos = message.indexOf(".", startPos + 6);
-						if (endPos < 0) {
-							endPos = message.length();
-						}
-						
-						title = message.substring(startPos + 6, endPos);
-					}
+					author = generateText(author);
+					title = generateText(title);
 					
 					network.accountingDocument(report, author, title);
 				} else {
@@ -113,6 +97,32 @@ public class Packet {
 			
 			return false;
 		}
+	}
+
+	private String generateText(String author) {
+		int startPos = 0;
+		int endPos = 0;
+		String message;
+		int num = 0;
+		
+		if(author.equals("Unknown")) {
+			message = "author:";
+			num = 7;
+		}else {
+			message = "title:";
+			num = 6;
+		}
+		
+		startPos = message.indexOf(message);
+		if (startPos >= 0) {
+			endPos = message.indexOf(".", startPos + num);
+			if (endPos < 0) {
+				endPos = message.length();
+			}
+			
+			author = message.substring(startPos + num, endPos);
+		}
+		return author;
 	}
 
 }

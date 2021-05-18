@@ -74,34 +74,34 @@ public class Packet {
 						if (endPos < 0) {
 							endPos = message.length();
 						}
-						;
+						
 						author = message.substring(startPos + 7, endPos);
 					}
-					;
+					
 					startPos = message.indexOf("title:");
 					if (startPos >= 0) {
 						endPos = message.indexOf(".", startPos + 6);
 						if (endPos < 0) {
 							endPos = message.length();
 						}
-						;
+						
 						title = message.substring(startPos + 6, endPos);
 					}
-					;
+					
 					network.accountingDocument(report, author, title);
 				} else {
 					title = "ASCII DOCUMENT";
 					if (message.length() >= 16) {
 						author = message.substring(8, 16);
 					}
-					;
+					
 					network.accountingDocument(report, author, title);
 				}
-				;
+				
 			} catch (IOException exc) {
 				
 			}
-			;
+			
 			return true;
 		} else {
 			try {
@@ -110,7 +110,7 @@ public class Packet {
 			} catch (IOException exc) {
 				
 			}
-			;
+			
 			return false;
 		}
 	}

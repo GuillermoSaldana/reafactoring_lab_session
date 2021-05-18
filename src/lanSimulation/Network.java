@@ -221,7 +221,6 @@ public class Network {
 		} catch (IOException exc) {
 			
 		}
-		;
 
 		Node currentNode = firstNode;
 		Packet packet = new Packet("BROADCAST", firstNode.name_, firstNode.name_);
@@ -236,7 +235,7 @@ public class Network {
 		} catch (IOException exc) {
 			
 		}
-		;
+		
 		return true;
 	}
 

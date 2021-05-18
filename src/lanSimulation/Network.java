@@ -155,6 +155,11 @@ public class Network {
 		
 		// enumerate the token ring, verifying whether all workstations are registered
 		// also count the number of printers and see whether the ring is circular
+		return enumerateTokenRing(printersFound, workstationsFound, encountered);
+	}
+
+	private boolean enumerateTokenRing(int printersFound, int workstationsFound, Hashtable encountered) {
+		Node currentNode;
 		currentNode = firstNode;
 		while (!encountered.containsKey(currentNode.name_)) {
 			encountered.put(currentNode.name_, currentNode);

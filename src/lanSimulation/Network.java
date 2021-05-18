@@ -138,11 +138,11 @@ public class Network {
 		if (workstations.isEmpty()) {
 			return false;
 		}
-		;
+		
 		if (firstNode == null) {
 			return false;
 		}
-		;
+		
 		// verify whether all registered workstations are indeed workstations
 		iter = workstations.elements();
 		while (iter.hasMoreElements()) {
@@ -150,9 +150,9 @@ public class Network {
 			if (currentNode instanceof Workstation == false) {
 				return false;
 			}
-			;
+			
 		}
-		;
+		
 		// enumerate the token ring, verifying whether all workstations are registered
 		// also count the number of printers and see whether the ring is circular
 		currentNode = firstNode;
@@ -161,26 +161,26 @@ public class Network {
 			if (currentNode instanceof Workstation) {
 				workstationsFound++;
 			}
-			;
+			
 			if (currentNode instanceof Printer) {
 				printersFound++;
 			}
-			;
+			
 			currentNode = send(currentNode);
 		}
-		;
+		
 		if (isFirstNode(currentNode)) {
 			return false;
 		}
-		;// not circular
+		// not circular
 		if (printersFound == 0) {
 			return false;
 		}
-		;// does not contain a printer
+		// does not contain a printer
 		if (workstationsFound != workstations.size()) {
 			return false;
 		}
-		; // not all workstations are registered
+		 // not all workstations are registered
 			// all verifications succeedeed
 		return true;
 	}

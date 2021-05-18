@@ -144,6 +144,12 @@ public class Network {
 		}
 		
 		// verify whether all registered workstations are indeed workstations
+		return verifyWorkstations(printersFound, workstationsFound, encountered);
+	}
+
+	private boolean verifyWorkstations(int printersFound, int workstationsFound, Hashtable encountered) {
+		Enumeration iter;
+		Node currentNode;
 		iter = workstations.elements();
 		while (iter.hasMoreElements()) {
 			currentNode = (Node) iter.nextElement();

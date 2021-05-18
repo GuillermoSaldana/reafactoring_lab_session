@@ -99,13 +99,13 @@ public class Packet {
 		}
 	}
 
-	private String generateText(String author) {
+	private String generateText(String typeMessage) {
 		int startPos = 0;
 		int endPos = 0;
 		String message;
 		int num = 0;
 		
-		if(author.equals("Unknown")) {
+		if(typeMessage.equals("Unknown")) {
 			message = "author:";
 			num = 7;
 		}else {
@@ -120,9 +120,9 @@ public class Packet {
 				endPos = message.length();
 			}
 			
-			author = message.substring(startPos + num, endPos);
+			typeMessage = message.substring(startPos + num, endPos);
 		}
-		return author;
+		return typeMessage;
 	}
 
 }
